@@ -1,13 +1,14 @@
 <?php
-
-include ('configdb.php');
-
+require 'config/init.php';
 
 class Personnage
 {
-  private $_degats,
-          $_id,
-          $_nom;
+  private $degats,
+          $id,
+          $nom,
+          $exp ,
+          $level ,
+          $strength ;
   
   const CEST_MOI = 1; // Constante renvoyée par la méthode `frapper` si on se frappe soi-même.
   const PERSONNAGE_TUE = 2; // Constante renvoyée par la méthode `frapper` si on a tué le personnage en le frappant.
@@ -17,15 +18,17 @@ class Personnage
   public function __construct(array $donnees)
   {
     $this->hydrate($donnees);
+    $this->type = strtolower(static::class);
   }
   
   public function frapper(Personnage $perso)
   {
-    if ($perso->id() == $this->_id)
+    if($perso->id() == $this->id)
     {
       return self::CEST_MOI;
     }
-    
+
+    $this->exp += 25;
     // On indique au personnage qu'il doit recevoir des dégâts.
     // Puis on retourne la valeur renvoyée par la méthode : self::PERSONNAGE_TUE ou self::PERSONNAGE_FRAPPE
     return $perso->recevoirDegats();
@@ -37,7 +40,7 @@ class Personnage
     {
       $method = 'set'.ucfirst($key);
       
-      if (method_exists($this, $method))
+      if(method_exists($this, $method))
       {
         $this->$method($value);
       }
@@ -46,10 +49,10 @@ class Personnage
   
   public function recevoirDegats()
   {
-    $this->_degats += 5;
+    $this->degats +=5 ;
     
     // Si on a 100 de dégâts ou plus, on dit que le personnage a été tué.
-    if ($this->_degats >= 100)
+    if($this->degats >= 100)
     {
       return self::PERSONNAGE_TUE;
     }
@@ -60,30 +63,48 @@ class Personnage
   
   
   // GETTERS //
-  
-
   public function degats()
   {
-    return $this->_degats;
+    return $this->degats;
   }
   
   public function id()
   {
-    return $this->_id;
+    return $this->id;
   }
   
   public function nom()
   {
-    return $this->_nom;
+    return $this->nom;
+  }
+
+  public function exp()
+  {
+    return $this->exp;
+  }
+
+  public function level()
+  {
+    return $this->level;
+  }
+
+  public function strength()
+  {
+    return $this->strength;
+  }
+  
+  public function type()
+  {
+    return $this->type;
   }
   
   public function setDegats($degats)
   {
     $degats = (int) $degats;
     
-    if ($degats >= 0 && $degats <= 100)
+    if($degats >= 0 && $degats <= 100)
     {
-      $this->_degats = $degats;
+      $this->degats = $degats;
     }
   }
   
@@ -91,20 +112,47 @@ class Personnage
   {
     $id = (int) $id;
     
-    if ($id > 0)
+    if($id > 0)
     {
-      $this->_id = $id;
+      $this->id = $id;
     }
   }
   
   public function setNom($nom)
   {
-    if (is_string($nom))
+    if(is_string($nom))
     {
-      $this->_nom = $nom;
+      $this->nom = $nom;
     }
+  }
+  public function nomValide()
+  {
+      if($this->nom != "") {
+          return true;
+      }
+  }
+
+  public function setExp($exp)
+  {
+    $this->exp = $exp;
+  }
+
+  public function setLevel($level)
+  {
+    $this->level = $this->level + $level;
+    
+  }
+
+  public function setStrength($strength)
+  {
+    $this->strength =  $strength;
+    
   }
 }
 
+  
+  
+  
+  
+  
 
-?>

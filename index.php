@@ -1,23 +1,106 @@
 <?php
+  
+  require 'config/init.php';
+// On fait appel à la classe Personnage
+  //require 'class/Personnage.php';
+  // On fait appel à la classe PersonnagesManager
+  //require 'class/PersonnagesManager.php';
 
-include ('personnages.php');
-include ('configdb.php');
+  session_start(); // On appelle session_start() 
 
+  if (isset($_GET['deconnexion'])) {
+    session_destroy();
+    header('Location: .');
+    exit();
+  }
+
+  // On fait appel à la connexion à la bdd
+  //require 'config/init.php';
+
+  // On fait appel à le code métier
+ // require 'combat.php';
 ?>
-
 <!DOCTYPE html>
 <html>
   <head>
-    <title>TP : Mini jeu de combat</title>
+    <title>🥋Vs🥋 Fight ! </title>
     
     <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
-  <h2>Choisissez votre nom de combattant</h2>
-    <form action="" method="post">
-       <input type="text" name="nom" maxlength="50" placeholder="Nom de combattant" />
-        <input type="submit" value="Créer ce personnage" name="creer" />
-        <input type="submit" value="Utiliser ce personnage" href="combat.php" name="utiliser" />
-    </form>
+    <p>Nombre de personnages créés : <?= $manager->count() ?></p>
+<?php
+  // On a un message à afficher ?
+  if (isset($message)) {
+    echo '<b>', $message, '</b>'; // Si oui, on l'affiche.
+  }
+  // Si on utilise un personnage (nouveau ou pas).
+  if (isset($perso)) {
+?>
+    <p><a href="?deconnexion=1">Déconnexion</a></p>
+    
+    <fieldset>
+      <legend>Mes informations</legend>
+      <p>
+        Nom : <?= htmlspecialchars($perso->nom()) ?><br />
+        Dégâts : <?= $perso->degats() ?><br />
+        Level : <?= $perso->level() ?><br />
+        Force : <?= $perso->strength() ?><br />
+        Type : <?= $perso->type() ?> <br />
+
+      </p>
+    </fieldset>
+    
+    <fieldset style>
+      <legend>Qui frapper ?</legend>
+      <p>
+        <?php
+          $persos = $manager->getList($perso->nom());
+          if (empty($persos)) {
+            echo 'Personne à frapper !';
+          } 
+          else {
+            foreach ($persos as $unPerso)
+            {
+              echo '<a href="?frapper=', $unPerso->id(), '">',
+                htmlspecialchars($unPerso->nom()),
+              '</a> (dégâts : ', $unPerso->degats(),
+                            ' level : ',
+                            htmlspecialchars($unPerso->level()),
+                            ' force : ',
+                            htmlspecialchars($unPerso->strength()), ')<br />';
+
+            }
+          }
+        ?>
+      </p>
+    </fieldset>
+<?php
+}
+// Sinon on affiche le formulaire de création de personnage
+else {
+?>
+  <form action="" method="post">
+    <p>
+      Nom : <input type="text" name="nom" maxlength="50" /> <br /> <br />
+      <select name="type">
+        <option value="guerrier">Guerrier</option>
+        <option value="archer">Archer</option>
+        <option value="magicien">Magicien</option>
+      </select>
+      <input type="submit" value="Créer ce personnage" name="creer" />
+      <input type="submit" value="Utiliser ce personnage" name="utiliser" />
+    </p>
+  </form>
+
+<?php } ?>
+
   </body>
 </html>
+<?php
+  // Si on a créé un personnage, on le stocke dans une variable session afin d'économiser une requête SQL.
+  if (isset($perso)) {
+    $_SESSION['perso'] = $perso;
+  }

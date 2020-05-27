@@ -1,0 +1,18 @@
+* {
+    background: url(https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/6996dc75-8258-4e02-8d2c-b7ed1797a28d/d2ipsrt-6ccf961f-1333-4869-8a2d-2461856f3824.jpg/v1/fill/w_900,h_675,q_75,strp/rpg_battle_background_2_by_dbszabo1.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwic3ViIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl0sIm9iaiI6W1t7InBhdGgiOiIvZi82OTk2ZGM3NS04MjU4LTRlMDItOGQyYy1iN2VkMTc5N2EyOGQvZDJpcHNydC02Y2NmOTYxZi0xMzMzLTQ4NjktOGEyZC0yNDYxODU2ZjM4MjQuanBnIiwid2lkdGgiOiI8PTkwMCIsImhlaWdodCI6Ijw9Njc1In1dXX0.zo6JkN08bxDlUEaNW2k1dtYcFlxoOtg0bJAoAI0CH1A);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+}
+
+html, body {
+    background-color: black;
+}
+
+form {
+
+    align-content: center;
+    text-align: center;
+    margin-top: 150px;
+}
